@@ -1764,7 +1764,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #9de8cd;
+  background: #a11d5b;
 }
 .feed-link,
 .chat {
@@ -2473,11 +2473,22 @@ embed {
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
 }
-.container {
-  position: relative;
-}
 .header-inner {
-  margin: 0 auto;
   padding: 50px 0 0px;
-  width: 700px;
+}
+.posts-expand .post-meta {
+  margin: 3px 0 10px 0;
+}
+hr {
+  margin: 20px 0;
+}
+.post-button {
+  margin-top: 20px;
+}
+.posts-expand .post-eof {
+  margin: 30px auto 30px;
+  width: 0;
+  height: 0;
+  background: #ccc;
+  text-align: center;
 }
