@@ -132,14 +132,14 @@
   <meta name="description" content="数据预处理的重要性就体现了出来">
 <meta name="keywords" content="工,OpenCV,C&#x2F;C++,contrib,OCR">
 <meta property="og:type" content="article">
-<meta property="og:title" content="text">
+<meta property="og:title" content="cv::text">
 <meta property="og:url" content="http://www.midocs.cc/2019/08/21/工/OpenCV/samples/contrib/text/index.html">
 <meta property="og:site_name" content="Midocs">
 <meta property="og:description" content="数据预处理的重要性就体现了出来">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-21T09:00:17.443Z">
+<meta property="og:updated_time" content="2019-09-14T10:33:30.970Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="text">
+<meta name="twitter:title" content="cv::text">
 <meta name="twitter:description" content="数据预处理的重要性就体现了出来">
 
 
@@ -158,7 +158,7 @@
   };
 </script>
 
-  <title>text | Midocs</title>
+  <title>cv::text | Midocs</title>
   
 
 
@@ -354,7 +354,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">text
+          <h1 class="post-title" itemprop="name headline">cv::text
 
               
             
@@ -380,13 +380,23 @@
                 
               
 
-              <time title="创建时间：2019-08-21 12:09:35 / 修改时间：17:00:17" itemprop="dateCreated datePublished" datetime="2019-08-21T12:09:35+08:00">2019-08-21</time>
+              <time title="创建时间：2019-08-21 12:09:35" itemprop="dateCreated datePublished" datetime="2019-08-21T12:09:35+08:00">2019-08-21</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-14 18:33:30" itemprop="dateModified" datetime="2019-09-14T18:33:30+08:00">2019-09-14</time>
+              </span>
             
           
 
@@ -441,7 +451,7 @@
 <hr>
 <a id="more"></a>
 
-<h2 id="ERFilter"><a href="#ERFilter" class="headerlink" title="ERFilter"></a>ERFilter</h2><p>示例文件 end_to_end_recognition.cpp<br>极值区域算法，使用文件，trained_classifierNM1.xml，trained_classifierNM2.xml，不是很懂干啥的，只能识别分开的单个词，效果不咋行，并不能 end to end</p>
+<h2 id="ERFilter"><a href="#ERFilter" class="headerlink" title="ERFilter"></a>ERFilter</h2><p>示例文件 end_to_end_recognition.cpp<br>极值区域算法，使用文件，trained_classifierNM1.xml，trained_classifierNM2.xml，不是很懂干啥的，只能识别分开的单个词，效果不咋行，并不能全都 end to end</p>
 <h2 id="OCRBeamSearchDecoder"><a href="#OCRBeamSearchDecoder" class="headerlink" title="OCRBeamSearchDecoder"></a>OCRBeamSearchDecoder</h2><p>示例文件 cropped_word_recognition.cpp<br>Beam Search 算法，对字符串长度敏感，需要词库，慢，准确率低，默认使用 loadOCRBeamSearchClassifierCNN 作为分类器，模型数据为 OCRBeamSearch_CNN_model_data.xml.gz，带CNN的一般都慢</p>
 <h2 id="OCRHMMDecoder"><a href="#OCRHMMDecoder" class="headerlink" title="OCRHMMDecoder"></a>OCRHMMDecoder</h2><p>示例文件 character_recognition.cpp<br>隐马尔科夫模型，不用词库，只能识别字母，速度 750 ms 左右，分类器为 loadOCRHMMClassifierCNN，模型数据为 OCRBeamSearch_CNN_model_data.xml.gz</p>
 <p>示例文件 segmented_word_recognition<br>使用词库 OCRHMM_transitions_table.xml，分类器使用 loadOCRHMMClassifierNM，识别率并不完美，速度比 Tesseract 稍慢，模型数据为 OCRHMM_knn_model_data.xml.gz</p>
@@ -449,9 +459,11 @@
 <h2 id="OCRHolisticWordRecognizer"><a href="#OCRHolisticWordRecognizer" class="headerlink" title="OCRHolisticWordRecognizer"></a>OCRHolisticWordRecognizer</h2><p>示例文件 dictnet_demo.cpp<br>需要词库文件，权重，不用分类器，使用文件分别为 “dictnet_vgg_deploy.prototxt”, “dictnet_vgg.caffemodel”, “dictnet_vgg_labels.txt”</p>
 <p>示例文件 text_recognition_cnn.cpp<br>效果挺好</p>
 <h2 id="OCRTesseract"><a href="#OCRTesseract" class="headerlink" title="OCRTesseract"></a>OCRTesseract</h2><p>示例文件 segmented_word_recognition<br>需要Tesseract，不用词库，分类器，需要调参，性能最佳</p>
+<p>示例文件 end_to_end_recognition.cpp</p>
 <h2 id="TextDetector"><a href="#TextDetector" class="headerlink" title="TextDetector"></a>TextDetector</h2><p>没有示例</p>
 <h2 id="TextDetectorCNN"><a href="#TextDetectorCNN" class="headerlink" title="TextDetectorCNN"></a>TextDetectorCNN</h2><p>示例文件 text_recognition_cnn.cpp<br>使用数据文件 textbox.prototxt，TextBoxes_icdar13.caffemodel，仅仅是图像定位，识别用的OCRHolisticWordRecognizer，效果挺好，速度一般</p>
 <p>示例文件 textbox_demo.cpp<br>使用数据文件 textbox.prototxt，TextBoxes_icdar13.caffemodel，仅定位</p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>预处理时把数字图弄得太小，导致识别不出来</p>
 
       
     </div>
@@ -508,6 +520,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/04/杂/外卖/" rel="prev" title="外卖">
+                外卖 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -576,7 +592,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">68</span>
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -653,7 +669,19 @@
                     
                       
                     
-                    <span class="site-state-item-count">24</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -750,7 +778,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">37</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -788,7 +822,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ERFilter"><span class="nav-number">1.</span> <span class="nav-text">ERFilter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRBeamSearchDecoder"><span class="nav-number">2.</span> <span class="nav-text">OCRBeamSearchDecoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRHMMDecoder"><span class="nav-number">3.</span> <span class="nav-text">OCRHMMDecoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRHolisticWordRecognizer"><span class="nav-number">4.</span> <span class="nav-text">OCRHolisticWordRecognizer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRTesseract"><span class="nav-number">5.</span> <span class="nav-text">OCRTesseract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextDetector"><span class="nav-number">6.</span> <span class="nav-text">TextDetector</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextDetectorCNN"><span class="nav-number">7.</span> <span class="nav-text">TextDetectorCNN</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ERFilter"><span class="nav-number">1.</span> <span class="nav-text">ERFilter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRBeamSearchDecoder"><span class="nav-number">2.</span> <span class="nav-text">OCRBeamSearchDecoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRHMMDecoder"><span class="nav-number">3.</span> <span class="nav-text">OCRHMMDecoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRHolisticWordRecognizer"><span class="nav-number">4.</span> <span class="nav-text">OCRHolisticWordRecognizer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OCRTesseract"><span class="nav-number">5.</span> <span class="nav-text">OCRTesseract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextDetector"><span class="nav-number">6.</span> <span class="nav-text">TextDetector</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TextDetectorCNN"><span class="nav-number">7.</span> <span class="nav-text">TextDetectorCNN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number">8.</span> <span class="nav-text">遇到的问题</span></a></li></ol></div>
             
 
           </div>
