@@ -16,7 +16,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.9.0">
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -129,15 +129,20 @@
 
 
 
-  <meta name="keywords" content="理">
+  <meta name="description" content="《光栅投影三维精密测量》">
+<meta name="keywords" content="理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="射影几何">
 <meta property="og:url" content="http://www.midocs.cc/2019/10/10/理/射影几何/射影几何/index.html">
 <meta property="og:site_name" content="Midocs">
+<meta property="og:description" content="《光栅投影三维精密测量》">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-10T16:17:07.154Z">
+<meta property="og:image" content="http://www.midocs.cc/img/%E7%90%86/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/01.png">
+<meta property="og:updated_time" content="2019-10-22T04:44:47.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="射影几何">
+<meta name="twitter:description" content="《光栅投影三维精密测量》">
+<meta name="twitter:image" content="http://www.midocs.cc/img/%E7%90%86/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/01.png">
 
 
 
@@ -192,7 +197,7 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</noscript>
 
 </head>
 
@@ -203,7 +208,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -392,7 +397,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-10-11 00:17:07" itemprop="dateModified" datetime="2019-10-11T00:17:07+08:00">2019-10-11</time>
+                <time title="修改时间：2019-10-22 12:44:47" itemprop="dateModified" datetime="2019-10-22T12:44:47+08:00">2019-10-22</time>
               </span>
             
           
@@ -429,7 +434,8 @@
       
 
       
-        <hr>
+        <p>《光栅投影三维精密测量》</p>
+<hr>
 <a id="more"></a>
 <h2 id="简比"><a href="#简比" class="headerlink" title="简比"></a>简比</h2><p>&emsp;&emsp;简比又被称放射比、单比。设 $P_1、P_2$ 是有向直线上的两个定点，$P$ 是此直线上的另一个点，$P$ 分有向线段$P_1P_2$为两个有向线段 $P_1P$ 和 $PP_2$ ，则这两个有向线段的数量比 $\frac{P_1P}{P_2P}$ 称为 $P_1P_2P$ 的简比，记为 ($P_1P_2P$)，其中 $P_1$、$P_2$ 为基点，$P$ 为分点。如果用坐标来表示，设共线三点的坐标为 $P_i(x_i, y_i)(i = 1, 2, 3)$，则的简比为</p>
 <p>$$ (P_1P_2P_3) = \frac{x_3 - x_1}{x_3 - x_2} = \frac{y_3 - y_1}{y_3 - y_2}$$</p>
@@ -445,7 +451,17 @@
 <p>$$ (P_2P_∞,P_1P_4) = -1$$</p>
 <p>&emsp;&emsp;这就是调和共轭理论</p>
 <hr>
-<h2 id="圆环点及二次曲线"><a href="#圆环点及二次曲线" class="headerlink" title="圆环点及二次曲线"></a>圆环点及二次曲线</h2><h2 id="迷向直线与拉盖尔定理"><a href="#迷向直线与拉盖尔定理" class="headerlink" title="迷向直线与拉盖尔定理"></a>迷向直线与拉盖尔定理</h2>
+<h2 id="圆环点及二次曲线"><a href="#圆环点及二次曲线" class="headerlink" title="圆环点及二次曲线"></a>圆环点及二次曲线</h2><p>&emsp;&emsp;在射影变换中，空间三维点坐标为 $M = [X, Y, Z]^T$，齐次坐标为 $\widetilde{M}= [X, Y, Z, t]^T$，当该点在无穷远平面上时，$t = 0$；当该点在有限平面上时，$t = 1$。经过透视投影变换后，与空间三维点对应的图像二维点坐标为 $m = [u, v]^T$，齐次坐标为 $\widetilde{m} = [u, v, 1]^T$。空间三维点与图像二维点的对应关系为</p>
+<p>$$ λ\widetilde{m} = K[R, T]\widetilde{M}$$</p>
+<p>式中，$K = \left[\begin{matrix} f_x &amp; s &amp; u_0 \\ 0 &amp; f_y &amp; v_0 \\ 0 &amp; 0 &amp; 1 \end{matrix}\right]$为摄像机的内参矩阵，$R$ 为摄像机外部参数中的旋转矩阵，$T$ 是摄像机外部参数中的平移向量。在矩阵 $K$ 中， $s$ 为倾斜因子；$f_x、f_y$ 分别为 $x、y$ 轴方向的有效焦距，$[u_0，v_0]$ 为图像主点坐标。<br>&emsp;&emsp;绝对二次曲线由一些无穷远平面上的点 $\widetilde{M}= [X, Y, Z, 0]^T$ 组成，这些点满足 $X^2+Y^2+Z^2 = 0$，即 $\widetilde{M}^T\widetilde{M} = 0$ 。绝对二次曲线所成像的齐次坐标 $\widetilde{m}$ 满足</p>
+<p>$$ \widetilde{m}^TK^{-T}K^{-1}\widetilde{m} = 0$$</p>
+<p>由式可得，绝对二次曲线的像在图像上是一条二次曲线。</p>
+<p>&emsp;&emsp;圆环点是无穷远直线与圆的交点，一个平面上有两个圆环点：$I(1, i, 0, 0)，J(1, -i, 0, 0)$。对圆环点 $I、J$，其坐标满足 $\begin{cases} x^2+y^2+z^2 = 0 \\ t=0 \end{cases}$ ，表明圆环点在绝对二次曲线上。如果知道圆环点的像 $m_I、m_J$，根据上式，通过矩阵分解和求逆，就可以确定内参矩阵 K</p>
+<hr>
+<h2 id="迷向直线与拉盖尔定理"><a href="#迷向直线与拉盖尔定理" class="headerlink" title="迷向直线与拉盖尔定理"></a>迷向直线与拉盖尔定理</h2><p>&emsp;&emsp;迷向直线又称极小直线，通过圆环点的任意虚直线。虚直线为迷向直线的充要条件是它上面任意两个不同的有穷点的距离为零。显然，任意迷向直线与无穷远直线的交点是圆环点。设两条非迷向直线为 $l_1、l_2$，夹角为 $θ$；迷向直线为 $m_1、m_2$，它们的斜率为 $-i、+i$，则</p>
+<p><img src="/img/%E7%90%86/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/01.png" alt title=" "></p>
+<p>&emsp;&emsp;以上就是拉盖尔定理。根据此定理和透视投影变换的交比不变性，如果已知两条普通相交直线的像和这两条直线所在平面的圆环点的像，就可以求出这两条直线的实际夹角。</p>
+
       
     </div>
 
@@ -565,7 +581,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">95</span>
+                    <span class="site-state-item-count">113</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -654,13 +670,7 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -761,9 +771,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-count">39</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -1010,7 +1018,7 @@
     }
   });
 </script>
-<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
   

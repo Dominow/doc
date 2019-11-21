@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="keywords" content="工,OpenCV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV算法精解 - 第五章 图像平滑">
+<meta property="og:url" content="http://www.midocs.cc/2019/10/22/工/OpenCV/读书笔记/OpenCV算法精解/第五章/index.html">
+<meta property="og:site_name" content="Midocs">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/01.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/02.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/03.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/04.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/05.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/06.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/06.5.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/07.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/08.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/09.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/10.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/11.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/11.5.png">
+<meta property="og:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/12.png">
+<meta property="og:updated_time" content="2019-10-23T07:54:34.149Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV算法精解 - 第五章 图像平滑">
+<meta name="twitter:image" content="http://www.midocs.cc/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/01.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://www.midocs.cc/2019/10/22/工/OpenCV/读书笔记/OpenCV算法精解/第五章/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>OpenCV算法精解 - 第五章 图像平滑 | Midocs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Midocs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.midocs.cc/2019/10/22/工/OpenCV/读书笔记/OpenCV算法精解/第五章/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dominow">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Midocs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenCV算法精解 - 第五章 图像平滑
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-22 11:14:45" itemprop="dateCreated datePublished" datetime="2019-10-22T11:14:45+08:00">2019-10-22</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-23 15:54:34" itemprop="dateModified" datetime="2019-10-23T15:54:34+08:00">2019-10-23</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/《OpenCV算法精解-张平》/" itemprop="url" rel="index"><span itemprop="name">《OpenCV算法精解 - 张平》</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<a id="more"></a>
+<h2 id="二维离散卷积"><a href="#二维离散卷积" class="headerlink" title="二维离散卷积"></a>二维离散卷积</h2><h3 id="full-卷积"><a href="#full-卷积" class="headerlink" title="full 卷积"></a>full 卷积</h3><p>卷积核 $\left(\begin{matrix} -1 &amp; -2 \\ 2 &amp; 1 \end{matrix}\right)$<br>先将卷积核逆时针翻转 180°，然后如下<br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/01.png" alt title=" "></p>
+<p>结果是一个高为 $H_1 + H_2 - 1$，宽为 $ W_1 + W_2 - 1 $的矩阵$\left(\begin{matrix} -1 &amp; -4 &amp; -4 \\ -1 &amp; -5 &amp; -6 \\ 6 &amp; 11 &amp; 4 \end{matrix}\right)$</p>
+<h3 id="valid-卷积"><a href="#valid-卷积" class="headerlink" title="valid 卷积"></a>valid 卷积</h3><p><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/02.png" alt title=" "></p>
+<p>结果是一个高为 $H_1 - H_2 + 1$，宽为 $ W_1 - W_2 + 1 $的矩阵$\left(\begin{matrix} 5 \end{matrix}\right)$</p>
+<h3 id="same-卷积"><a href="#same-卷积" class="headerlink" title="same 卷积"></a>same 卷积</h3><p>我们需要和原图像高，宽相等的卷积结果，所以需要指定一个“锚点”<br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/03.png" alt title=" "></p>
+<p>结果为$\left(\begin{matrix} -5 &amp; -6 \\ 11 &amp; 4 \end{matrix}\right)$，为 full 卷积的一部分，full 卷积和 same 卷积需要进行边界扩充，函数为 copyMakeBorder()，有如下几种常用方式：</p>
+<ol>
+<li>BORDER_REPLICATE:边界复制 例子：aaaaaa|abcdefgh|hhhhhhh</li>
+<li>BORDER_REFLECT:反射,对感兴趣的图像中的像素在两边进行复制例如:fedcba|abcdefgh|hgfedcb反射</li>
+<li>BORDER_REFLECT_101:反射101:例子：gfedcb|abcdefgh|gfedcba</li>
+<li>BORDER_WRAP:平铺扩充：cdefgh|abcdefgh|abcdefg</li>
+<li>BORDER_CONSTANT:常量复制：例子：iiiiii|abcdefgh|iiiiiii</li>
+</ol>
+<h3 id="C-实现"><a href="#C-实现" class="headerlink" title="C++ 实现"></a>C++ 实现</h3><p>第一步，通过 filp() 来反转卷积核<br>filter2D(src, dst, ddepth, kernel, anchor, delta, borderType)<br>ddepth = -1 表示输出矩阵和输入矩阵的数据类型相同， kernel 必须是 CV_32F 或 CV_64F，一般(0, 0)为锚点</p>
+<h3 id="可分离卷积核"><a href="#可分离卷积核" class="headerlink" title="可分离卷积核"></a>可分离卷积核</h3><p>如果一个卷积核至少由两个尺寸比它小的卷积核 full 卷积而成，并且在计算过程中所有边界处均进行扩充零的操作，则称该卷积核是可分离的，可分离卷积核可以将卷积的运算量从 $(H_1 * W_1)<em>(H_2</em>W_2)$ 减少到 $(H_1 * W_1)*(H_2+W_2)$</p>
+<p><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/04.png" alt title=" "></p>
+<p>same 卷积有类似性质，边界要补零，不补零，边界会不一样<br>高斯平滑和均值平滑都是可分离的</p>
+<h2 id="高斯平滑"><a href="#高斯平滑" class="headerlink" title="高斯平滑"></a>高斯平滑</h2><p><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/05.png" alt title=" "></p>
+<p>因为最后要归一化，所以代码实现中可以去掉高斯函数中的系数 $\frac{1}{2πσ^2}$，高斯卷积算子翻转180°和本身也是相同的，可分离为一维水平方向上的高斯核和一维垂直方向上的高斯核，基于这种分离性，OpenCV 只给出了构建一维垂直方向上的高斯卷积核的函数</p>
+<p>getGaussianKernel(ksize, sigma, ktype)</p>
+<h3 id="二项式近似"><a href="#二项式近似" class="headerlink" title="二项式近似"></a>二项式近似</h3><p><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/06.png" alt title=" "><br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/06.5.png" alt title=" "><br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/07.png" alt title=" "><br>对于一维高斯算子的二项式近似是构建边缘检测 Sobel 算子的基础</p>
+<h3 id="C-实现-1"><a href="#C-实现-1" class="headerlink" title="C++ 实现"></a>C++ 实现</h3><p>GaussianBlur(src, dst, ksize, sigmaX, sigmaY, borderType)<br>从参数设置可以看出，GaussianBlur 也是通过分离的高斯卷积核实现的</p>
+<h2 id="均值平滑"><a href="#均值平滑" class="headerlink" title="均值平滑"></a>均值平滑</h2><p><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/08.png" alt title=" "><br>求平均数嘛</p>
+<h3 id="快速均值平滑"><a href="#快速均值平滑" class="headerlink" title="快速均值平滑"></a>快速均值平滑</h3><p>图像的积分可以实现快速均值平滑，图像的积分就是求左上框内的和<br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/09.png" alt title=" "><br>integral()求图像的积分，积分后在最上面一行和最左列进行了补0</p>
+<p>对于快速均值平滑，OpenCV 提供了 boxFilter 和 blur 两个函数来实现该功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">boxFilter(src, dst, ddepth, ksize, anchor=Point(-1, -1), normalize=true, borderType)</span><br></pre></td></tr></table></figure>
+
+<p>Point(-1, -1)说明是中心</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blur(src, dst, ksize, ……)</span><br></pre></td></tr></table></figure>
+
+<h2 id="中值平滑"><a href="#中值平滑" class="headerlink" title="中值平滑"></a>中值平滑</h2><p>求中位数<br>自己实现用 sort()<br>medianBlur(src, dst, ksize)</p>
+<h2 id="双边滤波"><a href="#双边滤波" class="headerlink" title="双边滤波"></a>双边滤波</h2><p>均值平滑和高斯平滑都是将反转的卷积核作为权重模板，而双边滤波会根据每个位置的领域，对该位置构建不同的权重模板<br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/10.png" alt title=" "></p>
+<p>双边滤波可以保持目标的边缘，但是对纹理平滑的效果不是很理想，不如高斯平滑对纹理的平滑效果好，而且费时</p>
+<h3 id="C-实现-2"><a href="#C-实现-2" class="headerlink" title="C++ 实现"></a>C++ 实现</h3><p>bilateralFilter()<br>adaptiveBilateralFilter()</p>
+<h2 id="联合双边滤波"><a href="#联合双边滤波" class="headerlink" title="联合双边滤波"></a>联合双边滤波</h2><p>联合双边滤波(Joint bilterral Filter或称Cross Bilater Filter )与双边滤波类似，具体过程如下。<br>首先，对每个位置的邻域构建空间距离权重模板。与双边滤波构建空间距离权重模板一样。<br>然后，构建相似性权重模板。这是与双边滤波唯一的不同之处，双边滤波是根据原图，对于每一个位置， 通过该位置和其邻域的灰度值的差的指数来估计相似性;而联合双边滤波是首先对原图进行高斯平滑，根据平滑的结果,用当前位置及其邻域的值的差来估计相似性权重模板。<br>接下来，空间距离权重模板和相似性权重模板点乘,然后归一化,作为最后的权重模板。最后将权重模板与原图（注意不是高斯平滑的结果）在该位置的邻域对应位置积的和作为输出值。整个过程只在第二步计算相似性权重模板时和双边滤波不同，但是对图像平滑的效果，特别是对纹理图像来说，却有很大的不同。</p>
+<h2 id="导向滤波"><a href="#导向滤波" class="headerlink" title="导向滤波"></a>导向滤波</h2><p>有良好的保边效果，而且在细节增强方面都有良好的标系，执行时间也比双边滤波快很多<br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/11.png" alt title=" "><br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/11.5.png" alt title=" "><br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%BA%94%E7%AB%A0/12.png" alt title=" "></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/工/" rel="tag"># 工</a>
+          
+            <a href="/tags/OpenCV/" rel="tag"># OpenCV</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/22/工/OpenCV/读书笔记/OpenCV算法精解/第四章/" rel="next" title="OpenCV算法精解 - 第四章 对比度增强">
+                <i class="fa fa-chevron-left"></i> OpenCV算法精解 - 第四章 对比度增强
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/22/工/OpenCV/读书笔记/OpenCV算法精解/第六章/" rel="prev" title="OpenCV算法精解 - 第六章 阈值分割">
+                OpenCV算法精解 - 第六章 阈值分割 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dominow</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">113</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#二维离散卷积"><span class="nav-number">1.</span> <span class="nav-text">二维离散卷积</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#full-卷积"><span class="nav-number">1.1.</span> <span class="nav-text">full 卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#valid-卷积"><span class="nav-number">1.2.</span> <span class="nav-text">valid 卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#same-卷积"><span class="nav-number">1.3.</span> <span class="nav-text">same 卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-实现"><span class="nav-number">1.4.</span> <span class="nav-text">C++ 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可分离卷积核"><span class="nav-number">1.5.</span> <span class="nav-text">可分离卷积核</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高斯平滑"><span class="nav-number">2.</span> <span class="nav-text">高斯平滑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二项式近似"><span class="nav-number">2.1.</span> <span class="nav-text">二项式近似</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-实现-1"><span class="nav-number">2.2.</span> <span class="nav-text">C++ 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#均值平滑"><span class="nav-number">3.</span> <span class="nav-text">均值平滑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#快速均值平滑"><span class="nav-number">3.1.</span> <span class="nav-text">快速均值平滑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中值平滑"><span class="nav-number">4.</span> <span class="nav-text">中值平滑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双边滤波"><span class="nav-number">5.</span> <span class="nav-text">双边滤波</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-实现-2"><span class="nav-number">5.1.</span> <span class="nav-text">C++ 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#联合双边滤波"><span class="nav-number">6.</span> <span class="nav-text">联合双边滤波</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导向滤波"><span class="nav-number">7.</span> <span class="nav-text">导向滤波</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dominow</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
