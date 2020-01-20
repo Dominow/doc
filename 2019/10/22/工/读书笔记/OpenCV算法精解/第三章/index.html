@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="keywords" content="工,OpenCV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV算法精解 - 第三章 几何变换">
+<meta property="og:url" content="http://www.wangmi.me/2019/10/22/工/读书笔记/OpenCV算法精解/第三章/index.html">
+<meta property="og:site_name" content="Midocs">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.wangmi.me/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%B8%89%E7%AB%A0/01.png">
+<meta property="og:image" content="http://www.wangmi.me/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%B8%89%E7%AB%A0/02.png">
+<meta property="og:updated_time" content="2019-10-23T07:54:13.567Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV算法精解 - 第三章 几何变换">
+<meta name="twitter:image" content="http://www.wangmi.me/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%B8%89%E7%AB%A0/01.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://www.wangmi.me/2019/10/22/工/读书笔记/OpenCV算法精解/第三章/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>OpenCV算法精解 - 第三章 几何变换 | Midocs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Midocs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.wangmi.me/2019/10/22/工/读书笔记/OpenCV算法精解/第三章/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dominow">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Midocs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenCV算法精解 - 第三章 几何变换
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-22 09:46:45" itemprop="dateCreated datePublished" datetime="2019-10-22T09:46:45+08:00">2019-10-22</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-23 15:54:13" itemprop="dateModified" datetime="2019-10-23T15:54:13+08:00">2019-10-23</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/《OpenCV算法精解-张平》/" itemprop="url" rel="index"><span itemprop="name">《OpenCV算法精解 - 张平》</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<a id="more"></a>
+<h2 id="仿射变换"><a href="#仿射变换" class="headerlink" title="仿射变换"></a>仿射变换</h2><h3 id="仿射矩阵"><a href="#仿射矩阵" class="headerlink" title="仿射矩阵"></a>仿射矩阵</h3><p>二维空间坐标的仿射变换由以下公式描述：<br>$$\left(\begin{matrix} \widetilde{x} \\ \widetilde{y} \end{matrix}\right) =<br>\left(\begin{matrix} a_{11} &amp; a_{12} \\ a_{21} &amp; a_{22} \end{matrix}\right)<br>\left(\begin{matrix} x \\ y \end{matrix}\right) +<br>\left(\begin{matrix} a_{13} \\ a_{23} \end{matrix}\right)<br>$$</p>
+<p>整理仿射变换矩阵 A<br>$$ \left(\begin{matrix} \widetilde{x} \\ \widetilde{y} \\ 1 \end{matrix}\right) =<br>A\left(\begin{matrix} x \\ y \\ 1 \end{matrix}\right) $$<br>$$ A = \left(\begin{matrix} a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23} \\ 0 &amp; 0 &amp; 1 \end{matrix}\right)$$</p>
+<h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>$$ \left(\begin{matrix} 1 &amp; 0 &amp; t_x \\ 0 &amp; 1 &amp; t_y \\ 0 &amp; 0 &amp; 1 \end{matrix}\right)$$</p>
+<h3 id="放缩"><a href="#放缩" class="headerlink" title="放缩"></a>放缩</h3><p>$$ \left(\begin{matrix} s_x &amp; 0 &amp; 0 \\ 0 &amp; s_y &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{matrix}\right)$$</p>
+<h3 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h3><p>以原点为中心，逆时针旋转 α<br>$$ \left(\begin{matrix} cosα &amp; sinα &amp; 0 \\ -sinα &amp; cosα &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{matrix}\right)$$</p>
+<h3 id="计算仿射矩阵"><a href="#计算仿射矩阵" class="headerlink" title="计算仿射矩阵"></a>计算仿射矩阵</h3><h4 id="方程法"><a href="#方程法" class="headerlink" title="方程法"></a>方程法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mat A = getAffineTransform(src, dst);</span><br></pre></td></tr></table></figure>
+
+<h4 id="矩阵法"><a href="#矩阵法" class="headerlink" title="矩阵法"></a>矩阵法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mat A;</span><br><span class="line">gemm(s, t, 1.0, Mat(), 0, A, 0);</span><br></pre></td></tr></table></figure>
+
+<p>等比例缩放可以用 getRotationMatrix2D(center, angle, scale)，angle是逆时针旋转的角度，负即为顺时针，scale 为缩放比例。<br>计算以坐标点 (40, 50) 为中心逆时针旋转 30° 的仿射变换矩阵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mat A = getRotationMatrix2D(Point(40, 50), 30, 0.5);</span><br></pre></td></tr></table></figure>
+
+<p>返回值是一个 2 × 3 的 Mat，数据类型是 CV_64F</p>
+<h3 id="插值算法"><a href="#插值算法" class="headerlink" title="插值算法"></a>插值算法</h3><p>仿射变换无法得出坐标为小数或多出来的像素灰度值</p>
+<h4 id="最近邻插值"><a href="#最近邻插值" class="headerlink" title="最近邻插值"></a>最近邻插值</h4><p>仿射变换后点的坐标是小数，那么灰度值即为上下左右最相邻整数坐标灰度值</p>
+<h4 id="双线性插值"><a href="#双线性插值" class="headerlink" title="双线性插值"></a>双线性插值</h4><p><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%B8%89%E7%AB%A0/01.png" alt title=" "><br><img src="/img/%E5%B7%A5/OpenCV/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/%E7%AC%AC%E4%B8%89%E7%AB%A0/02.png" alt title=" "></p>
+<h4 id="高阶插值函数"><a href="#高阶插值函数" class="headerlink" title="高阶插值函数"></a>高阶插值函数</h4><p>三次样条插值，Legendre 中心函数和 sin(axs) 函数，高阶插值常使用二维离散卷积来实现</p>
+<h3 id="C-实现"><a href="#C-实现" class="headerlink" title="C++ 实现"></a>C++ 实现</h3><p>warpAffine()<br>resize()<br>rotate() 并没用仿射变换，而是矩阵的转置</p>
+<h2 id="投影变换-透视变换"><a href="#投影变换-透视变换" class="headerlink" title="投影变换(透视变换)"></a>投影变换(透视变换)</h2><p>去相机畸变啥的</p>
+<h3 id="投影变换矩阵"><a href="#投影变换矩阵" class="headerlink" title="投影变换矩阵"></a>投影变换矩阵</h3><p>二维投影变换，可由如下公式描述：<br>$$\left(\begin{matrix} \widetilde{x} \\ \widetilde{y} \\ \widetilde{z} \end{matrix}\right) =<br>\left(\begin{matrix} a_{11} &amp; a_{12} &amp; a_{13} \\ a_{21} &amp; a_{22} &amp; a_{23} \\ a_{31} &amp; a_{32} &amp; a_{33} \end{matrix}\right)<br>\left(\begin{matrix} x \\ y \\ z \end{matrix}\right)<br>$$</p>
+<h3 id="C-实现-1"><a href="#C-实现-1" class="headerlink" title="C++ 实现"></a>C++ 实现</h3><p>计算投影变换矩阵，输入长度为 4 的 Point 数组，或者 4 × 2 的 Mat 中，一行是一个坐标<br>Mat P = getPerspectiveTransform(src, dst);<br>投影变换<br>warpPerspective();</p>
+<h2 id="极坐标变换"><a href="#极坐标变换" class="headerlink" title="极坐标变换"></a>极坐标变换</h2><h3 id="笛卡尔坐标转换为极坐标"><a href="#笛卡尔坐标转换为极坐标" class="headerlink" title="笛卡尔坐标转换为极坐标"></a>笛卡尔坐标转换为极坐标</h3><p>以 $(\overline{x}, \overline{y})$ 为中心，通过以下计算公式对应到极坐标系 $θor$ 上的极坐标 (θ, r):</p>
+<p>$$ r = \sqrt{(x - \overline{x})^2 + (y - \overline{y})^2} $$<br>$$ θ =<br>\begin{cases}<br>2π + arctan2(y - \overline{y}, x - \overline{x}) &amp; y - \overline{y} ≤ 0\\<br>arctan2(y - \overline{y}, x - \overline{x}) &amp; y - \overline{y} &gt; 0<br>\end{cases}<br>$$</p>
+<ul>
+<li>OpenCV 提供的函数：<br>cartToPolar(x, y, r, theta, true) // true 是角度，false 是弧度</li>
+</ul>
+<h3 id="极坐标转换为笛卡尔坐标"><a href="#极坐标转换为笛卡尔坐标" class="headerlink" title="极坐标转换为笛卡尔坐标"></a>极坐标转换为笛卡尔坐标</h3><p>$$ x = \overline{x} + rcosθ, y = \overline{y} + rsinθ $$</p>
+<ul>
+<li>OpenCV 提供的函数：<br>polarToCart(r, angle, x, y, true);</li>
+</ul>
+<h3 id="Samples"><a href="#Samples" class="headerlink" title="Samples"></a>Samples</h3><p>极坐标向笛卡尔坐标的变换是以1为步长进行离散化的，由于变换步长比较大，输出图像矩阵可能会损失原图很多信息。可以通过以下方式进行改进</p>
+<p>因为极坐标变换是比较耗时的运算，有时候只需要对距离变换中心一定范围内的点进行极坐标变换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#include&lt;opencv2/core/core.hpp&gt;</span><br><span class="line">#include&lt;opencv2/highgui/highgui.hpp&gt;</span><br><span class="line">#include&lt;opencv2/imgproc/imgproc.hpp&gt;</span><br><span class="line">using namespace cv;</span><br><span class="line"></span><br><span class="line">Mat polar(Mat I, Point2f center, Size size, float minr = 0, float mintheta = 0, float thetaStep = 1.0 / 4, float rStep = 1.0)</span><br><span class="line">&#123;</span><br><span class="line">	Mat ri = Mat::zeros(Size(1, size.height), CV_32FC1);</span><br><span class="line">	for (int i = 0; i &lt; size.height; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		ri.at&lt;float&gt;(i, 0) = minr + i*rStep;</span><br><span class="line">	&#125;</span><br><span class="line">	Mat r = repeat(ri, 1, size.width);</span><br><span class="line"></span><br><span class="line">	Mat thetaj = Mat::zeros(Size(size.width, 1), CV_32FC1);</span><br><span class="line">	for (int j = 0; j &lt; size.width; j++)</span><br><span class="line">	&#123;</span><br><span class="line">		thetaj.at&lt;float&gt;(0, j) = mintheta + j*thetaStep;</span><br><span class="line">	&#125;</span><br><span class="line">	Mat theta = repeat(thetaj, size.height, 1);</span><br><span class="line">	//极坐标转换为笛卡尔坐标</span><br><span class="line">	Mat x, y;</span><br><span class="line">	polarToCart(r, theta, x, y, true);</span><br><span class="line">	//将坐标原点移动到中心点</span><br><span class="line">	x += center.x;</span><br><span class="line">	y += center.y;</span><br><span class="line">	//最近邻插值</span><br><span class="line">	Mat dst = 125 * Mat::ones(size, CV_8UC1);</span><br><span class="line">	for (int i = 0; i &lt; size.height; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		for (int j = 0; j &lt; size.width; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			float xij = x.at&lt;float&gt;(i, j);</span><br><span class="line">			float yij = y.at&lt;float&gt;(i, j);</span><br><span class="line">			int nearestx = int(round(xij));</span><br><span class="line">			int nearesty = int(round(yij));</span><br><span class="line">			if ((0 &lt;= nearestx&amp;&amp; nearestx &lt; I.cols) &amp;&amp;</span><br><span class="line">				(0 &lt;= nearesty&amp;&amp; nearesty &lt; I.rows))</span><br><span class="line">				dst.at&lt;uchar&gt;(i, j) = I.at&lt;uchar&gt;(nearesty, nearestx);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return dst;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char*argv[])</span><br><span class="line">&#123;</span><br><span class="line">	//读入图像</span><br><span class="line">	Mat I = imread(&quot;img2.jpg&quot;, IMREAD_GRAYSCALE);</span><br><span class="line">	if (!I.data)</span><br><span class="line">		return -1;</span><br><span class="line">	//图像的极坐标变换</span><br><span class="line">	float thetaStep = 1.0 / 4;</span><br><span class="line">	float minr = 270;</span><br><span class="line">	Size size(int(360 / thetaStep), 70);</span><br><span class="line">	Mat dst = polar(I, Point2f(508, 503), size, minr);</span><br><span class="line">	//沿水平方向上镜像处理</span><br><span class="line">	flip(dst, dst, 0);</span><br><span class="line">	//显示原图和变换后的结果</span><br><span class="line">	imshow(&quot;I&quot;, I);</span><br><span class="line">	imshow(&quot;极坐标变换&quot;, dst);</span><br><span class="line">	waitKey(0);</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="线性极坐标函数"><a href="#线性极坐标函数" class="headerlink" title="线性极坐标函数"></a>线性极坐标函数</h3><p>linearPolar()<br>步长不可控，损失可能大，无法指定区域</p>
+<h3 id="对数极坐标函数"><a href="#对数极坐标函数" class="headerlink" title="对数极坐标函数"></a>对数极坐标函数</h3><p>logPolar()<br>$$ \tilde{r} = M * log\sqrt{(x - \overline{x})^2 + (y - \overline{y})^2} $$<br>$$ θ =<br>\begin{cases}<br>2π + arctan2(y - \overline{y}, x - \overline{x}) &amp; y - \overline{y} ≤ 0\\<br>arctan2(y - \overline{y}, x - \overline{x}) &amp; y - \overline{y} &gt; 0<br>\end{cases}<br>$$</p>
+<p>反过来<br>$$ x = \overline{x} - exp(\frac{\tilde{r}}{M})cosθ, y = \overline{y} - exp(\frac{\tilde{r}}{M})sinθ $$</p>
+<p>M越大，水平方向上得到的信息越多</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/工/" rel="tag"># 工</a>
+          
+            <a href="/tags/OpenCV/" rel="tag"># OpenCV</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/14/工/OpenCV/基础/OpenCV常用函数/" rel="next" title="OpenCV 常用函数">
+                <i class="fa fa-chevron-left"></i> OpenCV 常用函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/22/工/读书笔记/OpenCV算法精解/第四章/" rel="prev" title="OpenCV算法精解 - 第四章 对比度增强">
+                OpenCV算法精解 - 第四章 对比度增强 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dominow</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">85</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#仿射变换"><span class="nav-number">1.</span> <span class="nav-text">仿射变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#仿射矩阵"><span class="nav-number">1.1.</span> <span class="nav-text">仿射矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平移"><span class="nav-number">1.2.</span> <span class="nav-text">平移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#放缩"><span class="nav-number">1.3.</span> <span class="nav-text">放缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#旋转"><span class="nav-number">1.4.</span> <span class="nav-text">旋转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算仿射矩阵"><span class="nav-number">1.5.</span> <span class="nav-text">计算仿射矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方程法"><span class="nav-number">1.5.1.</span> <span class="nav-text">方程法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵法"><span class="nav-number">1.5.2.</span> <span class="nav-text">矩阵法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插值算法"><span class="nav-number">1.6.</span> <span class="nav-text">插值算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最近邻插值"><span class="nav-number">1.6.1.</span> <span class="nav-text">最近邻插值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双线性插值"><span class="nav-number">1.6.2.</span> <span class="nav-text">双线性插值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高阶插值函数"><span class="nav-number">1.6.3.</span> <span class="nav-text">高阶插值函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-实现"><span class="nav-number">1.7.</span> <span class="nav-text">C++ 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#投影变换-透视变换"><span class="nav-number">2.</span> <span class="nav-text">投影变换(透视变换)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#投影变换矩阵"><span class="nav-number">2.1.</span> <span class="nav-text">投影变换矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-实现-1"><span class="nav-number">2.2.</span> <span class="nav-text">C++ 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极坐标变换"><span class="nav-number">3.</span> <span class="nav-text">极坐标变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#笛卡尔坐标转换为极坐标"><span class="nav-number">3.1.</span> <span class="nav-text">笛卡尔坐标转换为极坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#极坐标转换为笛卡尔坐标"><span class="nav-number">3.2.</span> <span class="nav-text">极坐标转换为笛卡尔坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Samples"><span class="nav-number">3.3.</span> <span class="nav-text">Samples</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性极坐标函数"><span class="nav-number">3.4.</span> <span class="nav-text">线性极坐标函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数极坐标函数"><span class="nav-number">3.5.</span> <span class="nav-text">对数极坐标函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dominow</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

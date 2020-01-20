@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="keywords" content="工,OpenCV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCV算法精解 - 第二章 图像数字化">
+<meta property="og:url" content="http://www.wangmi.me/2019/07/03/工/读书笔记/OpenCV算法精解/第二章/index.html">
+<meta property="og:site_name" content="Midocs">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-19T07:28:07.387Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenCV算法精解 - 第二章 图像数字化">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://www.wangmi.me/2019/07/03/工/读书笔记/OpenCV算法精解/第二章/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>OpenCV算法精解 - 第二章 图像数字化 | Midocs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Midocs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.wangmi.me/2019/07/03/工/读书笔记/OpenCV算法精解/第二章/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dominow">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Midocs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OpenCV算法精解 - 第二章 图像数字化
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-03 22:19:59" itemprop="dateCreated datePublished" datetime="2019-07-03T22:19:59+08:00">2019-07-03</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-19 15:28:07" itemprop="dateModified" datetime="2019-12-19T15:28:07+08:00">2019-12-19</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/《OpenCV算法精解-张平》/" itemprop="url" rel="index"><span itemprop="name">《OpenCV算法精解 - 张平》</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<a id="more"></a>
+<h2 id="Mat-类"><a href="#Mat-类" class="headerlink" title="Mat 类"></a>Mat 类</h2><p>Mat 是 Matrix 的缩写，代表矩阵或者数组的意思，构造函数如下：</p>
+<pre><code>Mat(int rows, int cols, int type)</code></pre><p>rows 代表矩阵的行数，cols 代表矩阵的列数，type 代表类型，包括通道数及其数据类型</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CV_8UC(n)</td>
+<td align="left">8 bit 无符号整数</td>
+</tr>
+<tr>
+<td align="center">CV_8S</td>
+<td align="left">8 bit 有符号整数</td>
+</tr>
+<tr>
+<td align="center">CV_16U</td>
+<td align="left">16 bit 无符号整数</td>
+</tr>
+<tr>
+<td align="center">CV_16S</td>
+<td align="left">16 bit 有符号整数</td>
+</tr>
+<tr>
+<td align="center">CV_32S</td>
+<td align="left">32 bit 有符号整数</td>
+</tr>
+<tr>
+<td align="center">CV_32F</td>
+<td align="left">32 bit 浮点数</td>
+</tr>
+<tr>
+<td align="center">CV_64F</td>
+<td align="left">64 bit 浮点数</td>
+</tr>
+</tbody></table>
+<p>n 指通道，即 n 个二维矩阵组成的矩阵，n = 1 为二维矩阵，n &gt; 1 为三维矩阵，RGB 即为三通道<br>改 bit 用 Mat::convertTo()</p>
+<hr>
+<h3 id="构建-Mat-对象"><a href="#构建-Mat-对象" class="headerlink" title="构建 Mat 对象"></a>构建 Mat 对象</h3><pre><code>Mat m = Mat(2,3,CV_32F(1));</code></pre><p>也可以借助 Size 对象</p>
+<pre><code>Mat m = Mat(Size(3,2), CV_32F(1));</code></pre><p>Size 指的是宽高，所以这样构造的矩阵还是 2 行 3 列的，还可以使用 create 函数</p>
+<pre><code>Mat m;
+m.create(2, 3, CV_32F(1));
+// m.create(Size(3,2), CV_32F(1));</code></pre><p>也可以如此快速创建矩阵，测试一些函数的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mat m = (Mat_&lt;int&gt;(2, 3) &lt;&lt; 1, 2, 3, 4, 5, 6);</span><br></pre></td></tr></table></figure>
+
+<p>对于 0 矩阵、1 矩阵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Mat o = Mat::ones(2, 3 CV_32FC1);</span><br><span class="line">Mat z = Mat::zeros(Size(3, 2), CV_32FC1);</span><br><span class="line">Mat z1(3,Size(3, 2), CV_32FC1, Scalar::all(0));</span><br></pre></td></tr></table></figure>
+
+<p>将图片转换为 Mat</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mat m = imread(&quot;图片位置&quot;, 参数);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="获得单通道-Mat-的基本信息"><a href="#获得单通道-Mat-的基本信息" class="headerlink" title="获得单通道 Mat 的基本信息"></a>获得单通道 Mat 的基本信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">// 行列</span><br><span class="line">cout &lt;&lt; m.rows &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; m.cols &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 尺寸</span><br><span class="line">cout &lt;&lt; m.</span><br><span class="line">() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 通道数</span><br><span class="line">cout &lt;&lt; m.channels() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 类型</span><br><span class="line">cout &lt;&lt; m.type() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 行列之积，即面积，通道无关</span><br><span class="line">cout &lt;&lt; m.total() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 维数</span><br><span class="line">cout &lt;&lt; m.dims() &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 精度</span><br><span class="line">// CV_8U=0, CV_8S=1, CV_16U=2, CV_16S=3, CV_32S=4, CV_32F=5, CV_64F=6</span><br><span class="line">cout &lt;&lt; m.depth() &lt;&lt; endl; // convertTo()</span><br><span class="line"></span><br><span class="line">// 步长</span><br><span class="line">// step：一行中所有元素的字节总量，算通道</span><br><span class="line">// step[0]：同step</span><br><span class="line">// step[1]：每个元素所占字节大小乘通道</span><br><span class="line">// step1：一行元素数量乘通道数量</span><br><span class="line">cout &lt;&lt; m.step &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; m.step[0] &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; m.step[1] &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// elemSize 一般用step</span><br><span class="line">//elemSize()：每个元素所占字节大小乘通道，同step[1]</span><br><span class="line">//elemSize1()：每个元素所占字节大小，1可以认为是1个通道的意思</span><br><span class="line">cout &lt;&lt; m.elemSize() &lt;&lt; endl;</span><br><span class="line">cout &lt;&lt; m.elemSize1() &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="访问单通道-Mat-对象中的值"><a href="#访问单通道-Mat-对象中的值" class="headerlink" title="访问单通道 Mat 对象中的值"></a>访问单通道 Mat 对象中的值</h3><p>输出类型一定要跟着图片类型匹配，一般不使用 unsigned int</p>
+<ol>
+<li><p>利用成员函数 at</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for (int r = 0; r &lt; m.rows; r++)</span><br><span class="line">&#123;</span><br><span class="line">    for (int c = 0; c &lt; m.cols; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; (int)(m.at&lt;uchar&gt;(r, c)) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用成员函数 ptr</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// ptr 指向行的首地址</span><br><span class="line">for (int r = 0; r &lt; m.rows; r++)</span><br><span class="line">&#123;</span><br><span class="line">    // 得到矩阵 m 的第 r 行行首的地址</span><br><span class="line">    const uchar * ptr = m.ptr&lt;uchar&gt;(r);</span><br><span class="line"></span><br><span class="line">    // 打印第 r 行的所有值</span><br><span class="line">    for (int c = 0; c &lt; m.cols; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        //const uchar * ptr = m.ptr&lt;uchar&gt;(r);</span><br><span class="line">        cout &lt;&lt; (int)ptr[c] &lt;&lt; &quot;,&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用成员函数 isContinuous() 和 ptr<br>OpenCV 一般是连续的，所以 isContinuous() 没多大意义</p>
+</li>
+<li><p>利用成员变量 step 和 data<br>step 每一行所占的字节数<br>step[0] 每一行所占的字节数<br>step[1] 每一数值所占的字节数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for (int r = 0; r &lt; img.rows; r++)</span><br><span class="line">&#123;</span><br><span class="line">    for (int c = 0; c &lt; img.cols; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; (int)*((uchar*)(img.data+img.step[0]*r+img.step[1]*c)) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用成员变量 step 和 elemSize()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for (int r = 0; r &lt; img.rows; r++)</span><br><span class="line">&#123;</span><br><span class="line">    for (int c = 0; c &lt; img.cols; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; (int)*((uchar*)(img.data + r * img.step + c * img.elemSize())) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="Vec-类"><a href="#Vec-类" class="headerlink" title="Vec 类"></a>Vec 类</h2><p>Vec 可理解为数学意义上的列向量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 构造一个长度为 3，数据类型为 int 且初始化为 21， 32， 14的列向量</span><br><span class="line">Vec&lt;int, 3&gt; vi(21, 32, 14);</span><br><span class="line"></span><br><span class="line">// 行数</span><br><span class="line">cout &lt;&lt; vi.rows &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 列数为1</span><br><span class="line">cout &lt;&lt; vi.cols &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 访问第 i 个数据</span><br><span class="line">cout &lt;&lt; vi[i] &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">// 别名</span><br><span class="line">typedef Vec&lt;uchar, 3&gt; Vec3b;</span><br><span class="line">typedef Vec&lt;int ,2&gt; Vec2i;</span><br><span class="line">typedef Vec&lt;float ,4&gt; Vec4f;</span><br><span class="line">typedef Vec&lt;double ,3&gt; Vec3d;</span><br></pre></td></tr></table></figure>
+
+<h3 id="构造多通道的-Mat-对象"><a href="#构造多通道的-Mat-对象" class="headerlink" title="构造多通道的 Mat 对象"></a>构造多通道的 Mat 对象</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mat mm(Mat_&lt;Vec3f&gt;(2,2) &lt;&lt;  Vec3f(1, 11, 21), Vec3f(2, 12, 32),</span><br><span class="line">                            Vec3f(3, 13, 23), Vec3f(4, 24, 34));</span><br></pre></td></tr></table></figure>
+
+<h3 id="访问多通道-Mat-对象中的值"><a href="#访问多通道-Mat-对象中的值" class="headerlink" title="访问多通道 Mat 对象中的值"></a>访问多通道 Mat 对象中的值</h3><ol>
+<li><p>利用成员函数 at</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for (int r = 0; r &lt; m.rows; r++)</span><br><span class="line">&#123;</span><br><span class="line">    for (int c = 0; c &lt; m.cols; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; m.at&lt;Vec3b&gt;(r, c) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用成员函数 ptr</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">for (int r = 0; r &lt; m.rows; r++)</span><br><span class="line">&#123;</span><br><span class="line">    // 得到矩阵 m 的第 r 行行首的地址</span><br><span class="line">    Vec3b* ptr = m.ptr&lt;Vec3b&gt;(r);</span><br><span class="line"></span><br><span class="line">    // 打印第 r 行的所有值</span><br><span class="line">    for (int c = 0; c &lt; m.cols; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        //Vec3b* ptr = m.ptr&lt;&gt;(r);</span><br><span class="line">        cout &lt;&lt; ptr[c] &lt;&lt; &quot;,&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用成员函数 isContinuous 和 ptr<br>略</p>
+</li>
+<li><p>利用成员变量 step 和 data</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for (int r = 0; r &lt; img.rows; r++)</span><br><span class="line">&#123;</span><br><span class="line">    for (int c = 0; c &lt; img.cols; c++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout &lt;&lt; *((Vec3b*)(img.data+img.step[0]*r+img.step[1]*c)) &lt;&lt; &quot;,&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>分离通道</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;Mat&gt; planes;</span><br><span class="line">spiit(img, planes);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>合并通道</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Mat plane[] = &#123;plane0, plane1, plane2&#125;;</span><br><span class="line">Mat dst;</span><br><span class="line">merge(plane, 3, dst);</span><br><span class="line"></span><br><span class="line">// 容器同理</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="获得-Mat-中某一区域的值"><a href="#获得-Mat-中某一区域的值" class="headerlink" title="获得 Mat 中某一区域的值"></a>获得 Mat 中某一区域的值</h2><ol>
+<li><p>利用成员函数 row(i) 或 col(j) 得到矩阵的第 i 行或者第 j 列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mat mr = m.row(r);</span><br><span class="line">Mat mc = m.col(c);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用成员函数 rowRange 或 colRange 得到矩阵的连续行或者连续列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 获取第2，3行，从0算起</span><br><span class="line">Mat r_range = img.rowRange(Range(2, 4));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用成员函数 clone 和 copyTo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mat r_range = img.rowRange(2, 4).clone;</span><br><span class="line">img.rowRange(2, 4).copyTo(r_range);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 Rect 类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Mat roi1 = img(Rect(Point(2,1), Point(3, 2))); // 左上右下的坐标</span><br><span class="line">Mat roi2 = img(Rect(2, 1, 2, 2)); // x, y, 高度，宽度</span><br><span class="line">Mat roi3 = img(Rect(Point(2, 1), Size(2, 2))); // 左上的坐标，尺寸</span><br><span class="line">// 这样得到的矩形区域是指向原矩阵的，改变值会一起改变，可以使用 clone 或者 copyTo</span><br><span class="line">Mat roi4 = img(Rect(2, 1, 2, 2)).clone();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="几何运算"><a href="#几何运算" class="headerlink" title="几何运算"></a>几何运算</h2><h3 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h3><p>类型相同</p>
+<h3 id="减法"><a href="#减法" class="headerlink" title="减法"></a>减法</h3><p>类型相同</p>
+<h3 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h3><p>类型相同<br>对应位置相乘<br>mul()<br>multiply()</p>
+<h3 id="点除"><a href="#点除" class="headerlink" title="点除"></a>点除</h3><p>类型相同<br>对应位置相除</p>
+<h3 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h3><p>矩阵乘法，只能同时是 float 或 double<br>gemm()<br>双通道，看作复数矩阵</p>
+<h3 id="指数和对数"><a href="#指数和对数" class="headerlink" title="指数和对数"></a>指数和对数</h3><p>exp()<br>log()</p>
+<p>类型只能是 CV_32F 或 CV_64F</p>
+<h3 id="幂指数和开平方"><a href="#幂指数和开平方" class="headerlink" title="幂指数和开平方"></a>幂指数和开平方</h3><p>pow()<br>sqrt()</p>
+<p>sqrt() 类型只能是 CV_32F 或 CV_64F</p>
+<h2 id="逻辑运算（补充）"><a href="#逻辑运算（补充）" class="headerlink" title="逻辑运算（补充）"></a>逻辑运算（补充）</h2>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/工/" rel="tag"># 工</a>
+          
+            <a href="/tags/OpenCV/" rel="tag"># OpenCV</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/01/杂/葡萄酒/" rel="next" title="葡萄酒">
+                <i class="fa fa-chevron-left"></i> 葡萄酒
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/12/工/OpenCV/基础/OpenCV知识点/" rel="prev" title="OpenCV 知识点">
+                OpenCV 知识点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dominow</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">85</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">32</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mat-类"><span class="nav-number">1.</span> <span class="nav-text">Mat 类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建-Mat-对象"><span class="nav-number">1.1.</span> <span class="nav-text">构建 Mat 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获得单通道-Mat-的基本信息"><span class="nav-number">1.2.</span> <span class="nav-text">获得单通道 Mat 的基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问单通道-Mat-对象中的值"><span class="nav-number">1.3.</span> <span class="nav-text">访问单通道 Mat 对象中的值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vec-类"><span class="nav-number">2.</span> <span class="nav-text">Vec 类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造多通道的-Mat-对象"><span class="nav-number">2.1.</span> <span class="nav-text">构造多通道的 Mat 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问多通道-Mat-对象中的值"><span class="nav-number">2.2.</span> <span class="nav-text">访问多通道 Mat 对象中的值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获得-Mat-中某一区域的值"><span class="nav-number">3.</span> <span class="nav-text">获得 Mat 中某一区域的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#几何运算"><span class="nav-number">4.</span> <span class="nav-text">几何运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加法"><span class="nav-number">4.1.</span> <span class="nav-text">加法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减法"><span class="nav-number">4.2.</span> <span class="nav-text">减法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点乘"><span class="nav-number">4.3.</span> <span class="nav-text">点乘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点除"><span class="nav-number">4.4.</span> <span class="nav-text">点除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乘法"><span class="nav-number">4.5.</span> <span class="nav-text">乘法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指数和对数"><span class="nav-number">4.6.</span> <span class="nav-text">指数和对数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#幂指数和开平方"><span class="nav-number">4.7.</span> <span class="nav-text">幂指数和开平方</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑运算（补充）"><span class="nav-number">5.</span> <span class="nav-text">逻辑运算（补充）</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dominow</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
