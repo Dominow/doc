@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="《光栅投影三维精密测量》">
+<meta name="keywords" content="理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="射影几何">
+<meta property="og:url" content="http://www.wangmi.me/2020/03/07/理/射影几何/射影几何/index.html">
+<meta property="og:site_name" content="Midocs">
+<meta property="og:description" content="《光栅投影三维精密测量》">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.wangmi.me/img/%E7%90%86/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/01.png">
+<meta property="og:updated_time" content="2019-10-22T04:44:47.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="射影几何">
+<meta name="twitter:description" content="《光栅投影三维精密测量》">
+<meta name="twitter:image" content="http://www.wangmi.me/img/%E7%90%86/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/01.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://www.wangmi.me/2020/03/07/理/射影几何/射影几何/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>射影几何 | Midocs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Midocs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.wangmi.me/2020/03/07/理/射影几何/射影几何/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dominow">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Midocs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">射影几何
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-07 14:52:12" itemprop="dateCreated datePublished" datetime="2020-03-07T14:52:12+08:00">2020-03-07</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-22 12:44:47" itemprop="dateModified" datetime="2019-10-22T12:44:47+08:00">2019-10-22</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>《光栅投影三维精密测量》</p>
+<hr>
+<a id="more"></a>
+<h2 id="简比"><a href="#简比" class="headerlink" title="简比"></a>简比</h2><p>&emsp;&emsp;简比又被称放射比、单比。设 $P_1、P_2$ 是有向直线上的两个定点，$P$ 是此直线上的另一个点，$P$ 分有向线段$P_1P_2$为两个有向线段 $P_1P$ 和 $PP_2$ ，则这两个有向线段的数量比 $\frac{P_1P}{P_2P}$ 称为 $P_1P_2P$ 的简比，记为 ($P_1P_2P$)，其中 $P_1$、$P_2$ 为基点，$P$ 为分点。如果用坐标来表示，设共线三点的坐标为 $P_i(x_i, y_i)(i = 1, 2, 3)$，则的简比为</p>
+<p>$$ (P_1P_2P_3) = \frac{x_3 - x_1}{x_3 - x_2} = \frac{y_3 - y_1}{y_3 - y_2}$$</p>
+<hr>
+<h2 id="交比"><a href="#交比" class="headerlink" title="交比"></a>交比</h2><p>&emsp;&emsp;点的交比是指共线四点 $P_1、P_2、P_3、P_4$ 说成的两个简比的比值，记为（$P_1P_2P_3P_4$），即</p>
+<p>$$ (P_1P_2, P_3P_4) = \frac{(P_1P_2P_3)}{(P_1P_2P_4)} = \frac{P_1P_3}{P_2P_3} : \frac{P_1P_4}{P_2P_4}$$</p>
+<p>式中，$P_1、P_2$ 为基点偶，$P_3、P_4$ 为分点偶。</p>
+<p>&emsp;&emsp;直线的交比是指共点四直线 $p_1、p_2、p_3、p_4$ 所成的两个简比的比值，即</p>
+<p>$$ (p_1p_2,p_3p_4) = \frac{(p_1p_2p_3)}{(p_1p_2p_4)} = \frac{sin(p_1p_3)}{sin(p_2p_3)} : \frac{sin(p_1p_4)}{sin(p_2p_4)}$$</p>
+<p>式中，$p_1、p_2$ 为基线偶，$p_3、p_4$ 为分线偶。</p>
+<hr>
+<h2 id="交比不变性及调和共轭理论"><a href="#交比不变性及调和共轭理论" class="headerlink" title="交比不变性及调和共轭理论"></a>交比不变性及调和共轭理论</h2><p>&emsp;&emsp;交比是基本的射影不变量，在射影变换过程中无论是点的交比还是直线的交比都保持不变，这就是交比不变性，它是射影几何理论的基本工具。<br>&emsp;&emsp;一条直线上四个点 $P_1、P_2、P_3、P_4$ 的摆列满足 $(P_1P_2, P_3P_4) = -1$，这种摆列称为调和形。一条直线上存在三点 $P_1、P_2、P_3$，而且 $P_2$ 为 $P_1、P_3$ 的中点，$P_∞$ 为这条直线与无穷远平面的交点，那么 $P_2、P_∞$ 调和分割 $P_1、P_3$，即满足</p>
+<p>$$ (P_2P_∞,P_1P_4) = -1$$</p>
+<p>&emsp;&emsp;这就是调和共轭理论</p>
+<hr>
+<h2 id="圆环点及二次曲线"><a href="#圆环点及二次曲线" class="headerlink" title="圆环点及二次曲线"></a>圆环点及二次曲线</h2><p>&emsp;&emsp;在射影变换中，空间三维点坐标为 $M = [X, Y, Z]^T$，齐次坐标为 $\widetilde{M}= [X, Y, Z, t]^T$，当该点在无穷远平面上时，$t = 0$；当该点在有限平面上时，$t = 1$。经过透视投影变换后，与空间三维点对应的图像二维点坐标为 $m = [u, v]^T$，齐次坐标为 $\widetilde{m} = [u, v, 1]^T$。空间三维点与图像二维点的对应关系为</p>
+<p>$$ λ\widetilde{m} = K[R, T]\widetilde{M}$$</p>
+<p>式中，$K = \left[\begin{matrix} f_x &amp; s &amp; u_0 \\ 0 &amp; f_y &amp; v_0 \\ 0 &amp; 0 &amp; 1 \end{matrix}\right]$为摄像机的内参矩阵，$R$ 为摄像机外部参数中的旋转矩阵，$T$ 是摄像机外部参数中的平移向量。在矩阵 $K$ 中， $s$ 为倾斜因子；$f_x、f_y$ 分别为 $x、y$ 轴方向的有效焦距，$[u_0，v_0]$ 为图像主点坐标。<br>&emsp;&emsp;绝对二次曲线由一些无穷远平面上的点 $\widetilde{M}= [X, Y, Z, 0]^T$ 组成，这些点满足 $X^2+Y^2+Z^2 = 0$，即 $\widetilde{M}^T\widetilde{M} = 0$ 。绝对二次曲线所成像的齐次坐标 $\widetilde{m}$ 满足</p>
+<p>$$ \widetilde{m}^TK^{-T}K^{-1}\widetilde{m} = 0$$</p>
+<p>由式可得，绝对二次曲线的像在图像上是一条二次曲线。</p>
+<p>&emsp;&emsp;圆环点是无穷远直线与圆的交点，一个平面上有两个圆环点：$I(1, i, 0, 0)，J(1, -i, 0, 0)$。对圆环点 $I、J$，其坐标满足 $\begin{cases} x^2+y^2+z^2 = 0 \\ t=0 \end{cases}$ ，表明圆环点在绝对二次曲线上。如果知道圆环点的像 $m_I、m_J$，根据上式，通过矩阵分解和求逆，就可以确定内参矩阵 K</p>
+<hr>
+<h2 id="迷向直线与拉盖尔定理"><a href="#迷向直线与拉盖尔定理" class="headerlink" title="迷向直线与拉盖尔定理"></a>迷向直线与拉盖尔定理</h2><p>&emsp;&emsp;迷向直线又称极小直线，通过圆环点的任意虚直线。虚直线为迷向直线的充要条件是它上面任意两个不同的有穷点的距离为零。显然，任意迷向直线与无穷远直线的交点是圆环点。设两条非迷向直线为 $l_1、l_2$，夹角为 $θ$；迷向直线为 $m_1、m_2$，它们的斜率为 $-i、+i$，则</p>
+<p><img src="/img/%E7%90%86/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/01.png" alt title=" "></p>
+<p>&emsp;&emsp;以上就是拉盖尔定理。根据此定理和透视投影变换的交比不变性，如果已知两条普通相交直线的像和这两条直线所在平面的圆环点的像，就可以求出这两条直线的实际夹角。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/理/" rel="tag"># 理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/07/理/贝叶斯模型/" rel="next" title="贝叶斯模型">
+                <i class="fa fa-chevron-left"></i> 贝叶斯模型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/07/理/读书笔记/线性代数_利昂/第一章/" rel="prev" title="线性代数 - 第一章 矩形与方程组">
+                线性代数 - 第一章 矩形与方程组 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dominow</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简比"><span class="nav-number">1.</span> <span class="nav-text">简比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交比"><span class="nav-number">2.</span> <span class="nav-text">交比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交比不变性及调和共轭理论"><span class="nav-number">3.</span> <span class="nav-text">交比不变性及调和共轭理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#圆环点及二次曲线"><span class="nav-number">4.</span> <span class="nav-text">圆环点及二次曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迷向直线与拉盖尔定理"><span class="nav-number">5.</span> <span class="nav-text">迷向直线与拉盖尔定理</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dominow</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

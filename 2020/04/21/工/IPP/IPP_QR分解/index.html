@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="keywords" content="工,IPP,线性代数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPP QR分解 最小二乘">
+<meta property="og:url" content="http://www.wangmi.me/2020/04/21/工/IPP/IPP_QR分解/index.html">
+<meta property="og:site_name" content="Midocs">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-21T02:43:17.444Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IPP QR分解 最小二乘">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://www.wangmi.me/2020/04/21/工/IPP/IPP_QR分解/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>IPP QR分解 最小二乘 | Midocs</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Midocs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.wangmi.me/2020/04/21/工/IPP/IPP_QR分解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dominow">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Midocs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IPP QR分解 最小二乘
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-21 10:40:03 / 修改时间：10:43:17" itemprop="dateCreated datePublished" datetime="2020-04-21T10:40:03+08:00">2020-04-21</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<a id="more"></a>
+<p>注意 pDecomp 的大小为 n x n</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> fX[<span class="number">97</span>] = &#123; <span class="number">6.1101</span>, <span class="number">5.5277</span>, <span class="number">8.5186</span>, <span class="number">7.0032</span>, <span class="number">5.8598</span>, <span class="number">8.3829</span>, <span class="number">7.4764</span>, <span class="number">8.5781</span>, <span class="number">6.4862</span>, <span class="number">5.0546</span>,</span><br><span class="line">				<span class="number">5.7107</span>, <span class="number">14.164</span>, <span class="number">5.734</span> , <span class="number">8.4084</span>, <span class="number">5.6407</span>, <span class="number">5.3794</span>, <span class="number">6.3654</span>, <span class="number">5.1301</span>, <span class="number">6.4296</span>, <span class="number">7.0708</span>,</span><br><span class="line">				<span class="number">6.1891</span>, <span class="number">20.27</span> , <span class="number">5.4901</span>, <span class="number">6.3261</span>, <span class="number">5.5649</span>, <span class="number">18.945</span>, <span class="number">12.828</span>, <span class="number">10.957</span>, <span class="number">13.176</span>, <span class="number">22.203</span>,</span><br><span class="line">				<span class="number">5.2524</span>, <span class="number">6.5894</span>, <span class="number">9.2482</span>, <span class="number">5.8918</span>, <span class="number">8.2111</span>, <span class="number">7.9334</span>, <span class="number">8.0959</span>, <span class="number">5.6063</span>, <span class="number">12.836</span>, <span class="number">6.3534</span>,</span><br><span class="line">				<span class="number">5.4069</span>, <span class="number">6.8825</span>, <span class="number">11.708</span>, <span class="number">5.7737</span>, <span class="number">7.8247</span>, <span class="number">7.0931</span>, <span class="number">5.0702</span>, <span class="number">5.8014</span>, <span class="number">11.7</span>  , <span class="number">5.5416</span>,</span><br><span class="line">				<span class="number">7.5402</span>, <span class="number">5.3077</span>, <span class="number">7.4239</span>, <span class="number">7.6031</span>, <span class="number">6.3328</span>, <span class="number">6.3589</span>, <span class="number">6.2742</span>, <span class="number">5.6397</span>, <span class="number">9.3102</span>, <span class="number">9.4536</span>,</span><br><span class="line">				<span class="number">8.8254</span>, <span class="number">5.1793</span>, <span class="number">21.279</span>, <span class="number">14.908</span>, <span class="number">18.959</span>, <span class="number">7.2182</span>, <span class="number">8.2951</span>, <span class="number">10.236</span>, <span class="number">5.4994</span>, <span class="number">20.341</span>,</span><br><span class="line">				<span class="number">10.136</span>, <span class="number">7.3345</span>, <span class="number">6.0062</span>, <span class="number">7.2259</span>, <span class="number">5.0269</span>, <span class="number">6.5479</span>, <span class="number">7.5386</span>, <span class="number">5.0365</span>, <span class="number">10.274</span>, <span class="number">5.1077</span>,</span><br><span class="line">				<span class="number">5.7292</span>, <span class="number">5.1884</span>, <span class="number">6.3557</span>, <span class="number">9.7687</span>, <span class="number">6.5159</span>, <span class="number">8.5172</span>, <span class="number">9.1802</span>, <span class="number">6.002</span> , <span class="number">5.5204</span>, <span class="number">5.0594</span>,</span><br><span class="line">				<span class="number">5.7077</span>, <span class="number">7.6366</span>, <span class="number">5.8707</span>, <span class="number">5.3054</span>, <span class="number">8.2934</span>, <span class="number">13.394</span>, <span class="number">5.4369</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> fY[<span class="number">97</span>] = &#123; <span class="number">17.592</span>, <span class="number">9.1302</span>, <span class="number">13.662</span>, <span class="number">11.854</span>, <span class="number">6.8233</span>, <span class="number">11.886</span>, <span class="number">4.3483</span>, <span class="number">12</span>    , <span class="number">6.5987</span>, <span class="number">3.8166</span>,</span><br><span class="line">				<span class="number">3.2522</span>, <span class="number">15.505</span>, <span class="number">3.1551</span>, <span class="number">7.2258</span>, <span class="number">0.71618</span>, <span class="number">3.5129</span>, <span class="number">5.3048</span>, <span class="number">0.56077</span>, <span class="number">3.6518</span>, <span class="number">5.3893</span>,</span><br><span class="line">				<span class="number">3.1386</span>, <span class="number">21.767</span>, <span class="number">4.263</span> , <span class="number">5.1875</span>, <span class="number">3.0825</span>, <span class="number">22.638</span>, <span class="number">13.501</span>, <span class="number">7.0467</span>, <span class="number">14.692</span>, <span class="number">24.147</span>,</span><br><span class="line">				<span class="number">-1.22</span> , <span class="number">5.9966</span>, <span class="number">12.134</span>, <span class="number">1.8495</span>, <span class="number">6.5426</span>, <span class="number">4.5623</span>, <span class="number">4.1164</span>, <span class="number">3.3928</span>, <span class="number">10.117</span>, <span class="number">5.4974</span>,</span><br><span class="line">				<span class="number">0.55657</span>, <span class="number">3.9115</span>, <span class="number">5.3854</span>, <span class="number">2.4406</span>, <span class="number">6.7318</span>, <span class="number">1.0463</span>, <span class="number">5.1337</span>, <span class="number">1.844</span>, <span class="number">8.0043</span>, <span class="number">1.0179</span>,</span><br><span class="line">				<span class="number">6.7504</span>, <span class="number">1.8396</span>, <span class="number">4.2885</span>, <span class="number">4.9981</span>, <span class="number">1.4233</span>, <span class="number">-1.4211</span>, <span class="number">2.4756</span>, <span class="number">4.6042</span>, <span class="number">3.9624</span>, <span class="number">5.4141</span>,</span><br><span class="line">				<span class="number">5.1694</span>, <span class="number">-0.74279</span>, <span class="number">17.929</span>, <span class="number">12.054</span>, <span class="number">17.054</span>, <span class="number">4.8852</span>, <span class="number">5.7442</span>, <span class="number">7.7754</span>, <span class="number">1.0173</span>, <span class="number">20.992</span>,</span><br><span class="line">				<span class="number">6.6799</span>, <span class="number">4.0259</span>, <span class="number">1.2784</span>, <span class="number">3.3411</span>, <span class="number">-2.6807</span>, <span class="number">0.29678</span>, <span class="number">3.8845</span>, <span class="number">5.7014</span>, <span class="number">6.7526</span>, <span class="number">2.0576</span>,</span><br><span class="line">				<span class="number">0.47953</span>, <span class="number">0.20421</span>, <span class="number">0.67861</span>, <span class="number">7.5435</span>, <span class="number">5.3436</span>, <span class="number">4.2415</span>, <span class="number">6.7981</span>, <span class="number">0.92695</span>, <span class="number">0.152</span>, <span class="number">2.8214</span>,</span><br><span class="line">				<span class="number">1.8451</span>, <span class="number">4.2959</span>, <span class="number">7.2029</span>, <span class="number">1.9869</span>, <span class="number">0.14454</span>, <span class="number">9.0551</span>, <span class="number">0.61705</span> &#125;;</span><br><span class="line"><span class="comment">//int fZ[3] = &#123; 2, 2, 1 &#125;;</span></span><br><span class="line"></span><br><span class="line">Ipp64f *pSrc = (Ipp64f*)ippNew(<span class="number">97</span> * <span class="number">2</span> * <span class="keyword">sizeof</span>(Ipp64f));</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;<span class="number">97</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">	pSrc[<span class="number">2</span> * i + <span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">	pSrc[<span class="number">2</span> * i + <span class="number">1</span>] = fX[i];</span><br><span class="line">	<span class="comment">//pSrc[3 * i + 2] = fZ[i];</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//for (int i = 0; i&lt;97; i++)</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line">	<span class="comment">//std::cout &lt;&lt; pSrc[2 * i + 0] &lt;&lt; ",";</span></span><br><span class="line">	<span class="comment">//std::cout &lt;&lt; pSrc[2 * i + 1] &lt;&lt; std::endl;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> srcStride2 = <span class="keyword">sizeof</span>(Ipp64f); <span class="comment">//    srcStride2        stride between the elements in the source matrix</span></span><br><span class="line"><span class="keyword">int</span> srcStride1 = <span class="number">2</span> * <span class="keyword">sizeof</span>(Ipp64f); <span class="comment">//    srcStride1        stride between the rows in the source matrix</span></span><br><span class="line"></span><br><span class="line">Ipp64f* pDecomp = (Ipp64f*)ippNew(<span class="number">97</span> * <span class="number">97</span> * <span class="keyword">sizeof</span>(Ipp64f));</span><br><span class="line"><span class="comment">// Ipp64f pDecomp[8*4]; /* Decomposed matrix location */</span></span><br><span class="line"><span class="keyword">int</span> decompStride2 = <span class="keyword">sizeof</span>(Ipp64f);</span><br><span class="line"><span class="keyword">int</span> decompStride1 = <span class="number">2</span> * <span class="keyword">sizeof</span>(Ipp64f);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> width = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> height = <span class="number">97</span>;</span><br><span class="line">Ipp64f *pBuffer = (Ipp64f*)ippNew(<span class="number">97</span> * <span class="keyword">sizeof</span>(Ipp64f));</span><br><span class="line"></span><br><span class="line">IppStatus status1 = ippmQRDecomp_m_64f((<span class="keyword">const</span> Ipp64f*)pSrc,</span><br><span class="line">	srcStride1, srcStride2, pBuffer,</span><br><span class="line">	pDecomp, decompStride1, decompStride2, width, height);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;<span class="number">97</span> * <span class="number">97</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//std::cout &lt;&lt; status1 &lt;&lt; std::endl;</span></span><br><span class="line">	<span class="comment">//std::cout &lt;&lt; pDecomp[i] &lt;&lt; std::endl;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">////  结果内存分配</span></span><br><span class="line"><span class="keyword">int</span> src2Stride2 = <span class="keyword">sizeof</span>(Ipp64f);</span><br><span class="line"><span class="keyword">int</span> src2Stride0 = <span class="number">2</span> * <span class="keyword">sizeof</span>(Ipp64f);</span><br><span class="line">Ipp64f*pDst = (Ipp64f*)ippNew(<span class="number">2</span> * <span class="keyword">sizeof</span>(Ipp64f));</span><br><span class="line"><span class="keyword">int</span> dstStride2 = <span class="keyword">sizeof</span>(Ipp64f);</span><br><span class="line"><span class="keyword">int</span> dstStride0 = <span class="number">2</span> * <span class="keyword">sizeof</span>(Ipp64f);</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">Ipp64f* pSrc2 = (Ipp64f*)ippNew(<span class="number">97</span> * <span class="keyword">sizeof</span>(Ipp64f));</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">97</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">	pSrc2[i] = fY[i];</span><br><span class="line">&#125;</span><br><span class="line">status1 = ippmQRBackSubst_mva_64f((<span class="keyword">const</span> Ipp64f*)pDecomp,</span><br><span class="line">	decompStride1, decompStride2, pBuffer, pSrc2, src2Stride0,</span><br><span class="line">	src2Stride2, pDst, dstStride0, dstStride2, width, height, count);</span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; pDst[<span class="number">0</span>] &lt;&lt; <span class="string">","</span> &lt;&lt; pDst[<span class="number">1</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/工/" rel="tag"># 工</a>
+          
+            <a href="/tags/IPP/" rel="tag"># IPP</a>
+          
+            <a href="/tags/线性代数/" rel="tag"># 线性代数</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/21/工/Qt/Qt插件/" rel="next" title="Qt 插件">
+                <i class="fa fa-chevron-left"></i> Qt 插件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/21/工/C_C++/OpenMP性能测试/" rel="prev" title="OpenMP 性能测试">
+                OpenMP 性能测试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Dominow</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Dominow</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.1.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
